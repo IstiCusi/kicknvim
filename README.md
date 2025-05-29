@@ -6,6 +6,10 @@
 
 **Kick'N'Vim** is a Neovim plugin that gives you everything you need to write, build, and run [KickAssembler](http://theweb.dk/KickAssembler/) projects for the C64 – all from inside Neovim. If you’re tired of VSCode or other heavyweight environments and prefer fast, focused, keyboard-driven workflows, this one’s for you.
 
+<p align="center">
+  <img src="media/logo.png" alt="Kick'N'Vim Logo" width="400"/>
+</p>
+
 ---
 
 ## ✨ Features
