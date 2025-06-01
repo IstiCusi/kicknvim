@@ -8,6 +8,12 @@ local config = {
     assemble = "<leader>ka",
     run = "<leader>kr",
   }
+  repos = {
+    "https://github.com/c64lib/common.git",
+    "https://github.com/c64lib/chipset.git",
+    "https://github.com/c64lib/text.git",
+    "https://github.com/c64lib/copper64.git",
+  }
 }
 
 function M.setup(opts)
@@ -47,6 +53,13 @@ function M.open_kmanual()
   print("Opened KickAssembler Manual")
 end
 
+function M.open_libmanual()
+  local  cmd = "https://c64lib.github.io/"
+  vim.fn.system(cmd)
+  print("Opened C64Lib Manual")
+end
+
+
 function M.assemble_current_file()
   if not is_kickass_file() then
     print("Active buffer is not a kickassembler file")
@@ -85,5 +98,33 @@ function M.run_prg()
     prg_file
   }, { detach = true })
 end
+
+function M.install_or_update_libs()
+  if not is_kickass_file() then
+    print("Active buffer is not a KickAssembler file")
+    return
+  end
+
+  local buffer_path = vim.fn.expand("%:p:h")
+  local lib_path = buffer_path .. "/lib"
+
+  if vim.fn.isdirectory(lib_path) == 0 then
+    print("Creating lib directory at " .. lib_path)
+    vim.fn.mkdir(lib_path, "p")
+  end
+
+  for _, repo_url in ipairs(config.repos) do
+    local repo_name = repo_url:match("([^/]+)%.git$")
+    local target_path = lib_path .. "/" .. repo_name
+    if vim.fn.isdirectory(target_path) == 0 then
+      print("Cloning " .. repo_name .. "...")
+      vim.fn.system({ "git", "clone", repo_url, target_path })
+    else
+      print("Updating " .. repo_name .. "...")
+      vim.fn.system({ "git", "-C", target_path, "pull" })
+    end
+  end
+end
+
 
 return M
