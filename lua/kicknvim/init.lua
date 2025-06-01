@@ -41,6 +41,11 @@ end
 
 -- =======================================================================
 
+function M.open_kmanual()
+  local  cmd = "xdg-open https://theweb.dk/KickAssembler/webhelp/content/cpt_Introduction.html"
+  vim.fn.system(cmd)
+  print("Opened KickAssembler Manual")
+end
 
 function M.assemble_current_file()
   if not is_kickass_file() then

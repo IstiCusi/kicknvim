@@ -2,7 +2,7 @@ local kicknvim = require("kicknvim")
 
 vim.api.nvim_create_user_command("KickAssemble", kicknvim.assemble_current_file, {})
 vim.api.nvim_create_user_command("KickRun", kicknvim.run_prg, {})
-
+vim.api.nvim_create_user_command("KickMan", kicknvim.open_kmanual, {})
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "kickass",
