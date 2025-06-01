@@ -7,7 +7,8 @@ local config = {
   keys = {
     assemble = "<leader>ka",
     run = "<leader>kr",
-  }
+    libinstall = "<leader>kl"
+  }, 
   repos = {
     "https://github.com/c64lib/common.git",
     "https://github.com/c64lib/chipset.git",
