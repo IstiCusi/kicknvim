@@ -1,0 +1,46 @@
+.TH TYA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+tya \- Transfer Y Register to Accumulator
+
+.SH SYNOPSIS
+.B tya
+
+.SH DESCRIPTION
+TYA (Transfer Y to Accumulator) copies the value of the Y index register into the accumulator (A). The Zero and Negative flags are set based on the value transferred to the accumulator.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode  Opcode  Bytes  Cycles
+Implied          $98     1      2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Z  
+Set if A = 0.
+.TP
+.B N  
+Set if bit 7 of A is set (negative in two's complement).
+
+.SH EXAMPLE
+.nf
+    LDY #$07
+    TYA          ; A = $07, Z=0, N=0
+
+    LDY #$00
+    TYA          ; A = $00, Z=1, N=0
+.fi
+
+.SH NOTES
+- Frequently used to transfer index values into the accumulator for output or arithmetic.
+- The Y register remains unchanged.
+- Flag updates reflect the new accumulator value.
+
+.SH SEE ALSO
+tay(99), tax(99), lda(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

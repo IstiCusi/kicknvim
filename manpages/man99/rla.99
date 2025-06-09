@@ -1,0 +1,65 @@
+.TH RLA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+rla \- Rotate Left Memory, then AND with Accumulator (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B rla
+\fIaddress\fR
+
+.SH DESCRIPTION
+RLA is an undocumented instruction of the MOS 6502 processor that combines a rotate-left with a logical AND into a single operation. Specifically:
+1. The memory operand is rotated one bit left (ROL).
+2. The result of that rotation is AND‑ed with the accumulator (A).
+The final result is stored in the accumulator, and the rotated value is written back to memory :contentReference[oaicite:2]{index=2}.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode         Opcode  Bytes  Cycles
+Zero Page               $27     2      5
+Zero Page,X             $37     2      6
+Absolute                $2F     3      6
+Absolute,X              $3F     3      7
+Absolute,Y              $3B     3      7
+(Indirect,X)            $23     2      8
+(Indirect),Y            $33     2      8
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B C
+Set to the value shifted out from bit 7 of the rotated memory.
+.TP
+.B N
+Set if bit 7 of the resulting accumulator value is set.
+.TP
+.B Z
+Set if the resulting accumulator value is zero.
+.TP
+.B V
+Undefined (some assemblers do not set overflow for undocumented ops).
+
+.SH EXAMPLES
+.TP
+.B Rotate memory and combine with accumulator
+.nf
+    LDA #$F0        ; A = %11110000
+    LDX #$02
+    STA $10         ; Memory[$10] = $F0
+    RLA $10         ; rotate memory, then A := A AND M
+    ; Memory[$10] is now $E1 (0xF0 <<1 = 0xE0 + carry 1)
+    ; A = $E0 AND $F0 = $E0
+    ; Flags N,Z,C updated accordingly
+.fi
+
+.SH NOTES
+- RLA is undocumented and may not behave consistently across different 6502 variants.
+- It offers an efficient way to combine rotate and mask operations but must be used with caution due to its undocumented nature.
+
+.SH SEE ALSO
+rol(99), and(99), slo(99), rla(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

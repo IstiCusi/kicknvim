@@ -1,0 +1,44 @@
+.TH SEC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sec \- Set Carry Flag
+
+.SH SYNOPSIS
+.B sec
+
+.SH DESCRIPTION
+SEC (Set Carry) sets the Carry flag (C) in the processor status register. This instruction is essential for subsequent addition or subtraction operations, ensuring correct carry or borrow behavior.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$38	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.B C  
+Set to 1.
+
+.SH EXAMPLE
+.nf
+    CLC           ; Clear carry before an arithmetic operation
+    LDA #$05
+    CLC
+    ADC #$03      ; A = $08
+
+    SEC           ; Prepare for subtraction with carry
+    SBC #$02      ; Equivalent to A = $08 – $02
+.fi
+
+.SH NOTES
+- Always use SEC before SBC to perform correct subtraction.
+- The Carry flag also affects ROL/ROR operations and multiprecision arithmetic.
+- It does not modify any other processor flags.
+
+.SH SEE ALSO
+clc(99), sbc(99), adc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

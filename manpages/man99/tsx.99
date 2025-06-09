@@ -1,0 +1,46 @@
+.TH TSX 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+tsx \- Transfer Stack Pointer to X Register
+
+.SH SYNOPSIS
+.B tsx
+
+.SH DESCRIPTION
+TSX (Transfer Stack Pointer to X) copies the current value of the stack pointer (SP) into the X register. It updates the Zero and Negative flags based on the loaded value into X.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode  Opcode  Bytes  Cycles
+Implied          $BA     1      2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Z  
+Set if X = 0.
+.TP
+.B N  
+Set if bit 7 of X is set (negative in two's complement).
+
+.SH EXAMPLE
+.nf
+    TSX          ; X = SP, flags reflect X
+
+    ; Example use:
+    TSX
+    STX $10       ; Save SP to memory location $0010
+.fi
+
+.SH NOTES
+- Useful for introspection or saving the current stack pointer.
+- X and SP operate within the 8-bit range; X only reflects the low byte.
+- No effect on the stack pointer itself.
+
+.SH SEE ALSO
+TXS(99), tax(99), tya(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

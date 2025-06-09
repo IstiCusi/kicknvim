@@ -1,0 +1,99 @@
+
+.TH LDA 99 "May 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+lda \- Load Accumulator with Memory
+
+.SH SYNOPSIS
+.B lda
+\fIaddressing-mode\fR
+
+.SH DESCRIPTION
+LDA (Load Accumulator) is an instruction of the MOS 6502 processor that loads a byte from memory into the accumulator (A register). The value is copied and does not alter the source. The previous content of the accumulator is replaced.
+
+.SH FLAGS AFFECTED
+.TP
+.B Negative (N)
+Set if bit 7 of the loaded value is 1.
+
+.TP
+.B Zero (Z)
+Set if the loaded value is zero.
+
+.SH ADDRESSING MODES
+.TP
+.B Immediate
+lda #$10
+.br
+Loads the constant value $10 directly into the accumulator.
+
+.TP
+.B Zero Page
+lda $10
+.br
+Loads the value from memory address $0010.
+
+.TP
+.B Zero Page,X
+lda $10,x
+.br
+Adds register X to $10 and loads from the resulting zero-page address.
+
+.TP
+.B Absolute
+lda $1234
+.br
+Loads the value from memory address $1234.
+
+.TP
+.B Absolute,X
+lda $1234,x
+.br
+Adds register X to $1234 and loads from the resulting address.
+
+.TP
+.B Absolute,Y
+lda $1234,y
+.br
+Adds register Y to $1234 and loads from the resulting address.
+
+.TP
+.B (Indirect,X)
+lda ($10,x)
+.br
+Adds X to $10, looks up the resulting zero-page address as a 16-bit pointer, and loads the value it points to.
+
+.TP
+.B (Indirect),Y
+lda ($10),y
+.br
+Looks up the zero-page address $10 as a 16-bit pointer, adds Y, and loads from the resulting address.
+
+.SH OPCODES
+.TS
+l l l.
+Addressing Mode	Opcode	Cycles
+Immediate	$A9	2
+Zero Page	$A5	3
+Zero Page,X	$B5	4
+Absolute	$AD	4
+Absolute,X	$BD	4 (+1 if page crossed)
+Absolute,Y	$B9	4 (+1 if page crossed)
+(Indirect,X)	$A1	6
+(Indirect),Y	$B1	5 (+1 if page crossed)
+.TE
+
+.SH EXAMPLES
+.TP
+.B lda #$01
+Loads the constant 1 into the accumulator.
+
+.TP
+.B lda $0200
+Loads the byte at memory address $0200 into the accumulator.
+
+.SH SEE ALSO
+sta(99), tax(99), ldx(99), inx(99)
+
+.SH AUTHOR
+Adapted for manpage use by Stephan P. A. Strauss

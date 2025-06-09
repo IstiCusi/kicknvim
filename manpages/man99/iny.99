@@ -1,0 +1,64 @@
+.TH INY 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+iny \- Increment Y Register
+
+.SH SYNOPSIS
+.B iny
+
+.SH DESCRIPTION
+INY (Increment Y Register) increments the value in the Y index register by one. The result wraps around if it overflows:
+- If the Y register is 0xFF, incrementing wraps it to 0x00.
+- For signed values, incrementing 0x7F (+127) wraps to 0x80 (-128).
+
+This instruction is useful for implementing loops, indexing arrays, and traversing memory.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$C8	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if bit 7 of the result is set (i.e., result is negative).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Simple loop using Y register
+.nf
+    LDY #$00     ; Initialize Y to 0
+loop:
+    ; Perform operations
+    INY          ; Increment Y
+    CPY #$10     ; Compare Y to 16
+    BNE loop     ; Loop until Y equals 16
+.fi
+
+.TP
+.B Wrapping behavior
+.nf
+    LDY #$FF     ; Load 255 into Y
+    INY          ; Increment Y (wraps to 0)
+    BEQ wrapped  ; Branch if result is zero
+
+wrapped:
+    ; Handle wrap-around case
+.fi
+
+.SH NOTES
+- INY does not affect the Carry (C) or Overflow (V) flags.
+- It operates directly on the Y register; to increment memory locations, use INC.
+- For incrementing the X register, use INX.
+
+.SH SEE ALSO
+iny(99), dey(99), inc(99), inx(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

@@ -1,0 +1,68 @@
+.TH JAM 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+jam \- Halt the CPU (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B jam
+
+.SH DESCRIPTION
+JAM is an undocumented instruction of the MOS 6502 processor that causes the CPU to halt by entering an infinite loop. Once executed, the processor stops fetching and executing further instructions, effectively "jamming" the system.
+
+This instruction is primarily used for:
+- **Intentional CPU halting**: In scenarios like demos or debugging where halting the CPU is desired.
+- **Copy protection**: As a trap to prevent unauthorized execution; if the JAM instruction is reached, it indicates tampering or incorrect execution flow.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$02	1	1
+Implied	$12	1	1
+Implied	$22	1	1
+Implied	$32	1	1
+Implied	$42	1	1
+Implied	$52	1	1
+Implied	$62	1	1
+Implied	$72	1	1
+Implied	$92	1	1
+Implied	$B2	1	1
+Implied	$D2	1	1
+Implied	$F2	1	1
+.TE
+
+.SH FLAGS AFFECTED
+None. The JAM instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Halting the CPU intentionally
+.nf
+    ; Some operations
+    .byte $02    ; JAM opcode to halt the CPU
+.fi
+
+.TP
+.B Using JAM for copy protection
+.nf
+    ; Load routine
+    LDA #$00
+    BEQ skip
+    .byte $02    ; JAM opcode as a trap
+skip:
+    ; Continue execution
+.fi
+
+In this example, if the condition fails and the branch is not taken, the JAM instruction executes, halting the CPU. This can serve as a rudimentary form of copy protection or error handling.
+
+.SH NOTES
+- JAM is an undocumented opcode and may not be supported on all 6502 variants.
+- Its behavior is consistent across many NMOS 6502 processors but is not guaranteed on CMOS versions like the 65C02.
+- Use with caution, as relying on undocumented instructions can affect portability and compatibility.
+
+.SH SEE ALSO
+brk(99), nop(99), rti(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

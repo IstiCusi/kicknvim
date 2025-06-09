@@ -1,0 +1,52 @@
+.TH BMI 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bmi \- Branch if Minus (Negative flag set)
+
+.SH SYNOPSIS
+.B bmi
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BMI (Branch if Minus) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the negative flag (N) is set (i.e., equals one).
+
+This instruction is typically used after operations that affect the negative flag, such as arithmetic or logical instructions, allowing conditional control flow based on the sign of the result.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BMI.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$30	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BMI only checks the negative flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    LDA #$FF     ; Load -1 into accumulator (sets N flag)
+    BMI negative ; Branch if negative flag is set
+
+    ; code for non-negative result continues here
+
+negative:
+    ; code for negative result
+.fi
+
+.SH NOTES
+- BMI is commonly used after arithmetic or logical operations to branch based on the sign of the result.
+- If the branch crosses a page boundary, the CPU requires one extra cycle.
+- The target must be within -128 to +127 bytes of the instruction following BMI.
+
+.SH SEE ALSO
+bpl(99), beq(99), bne(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

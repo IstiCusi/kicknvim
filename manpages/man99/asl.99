@@ -1,0 +1,57 @@
+.TH ASL 99 "May 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+asl \- Arithmetic Shift Left
+
+.SH SYNOPSIS
+.B asl
+\fIaddressing-mode\fR
+
+.SH DESCRIPTION
+The ASL (Arithmetic Shift Left) instruction shifts all bits of the accumulator or a memory location one bit to the left. The bit that was in bit 7 is shifted into the carry flag. Bit 0 is set to zero.
+
+This operation effectively multiplies the operand by 2 in binary. However, care must be taken with signed numbers, as the sign bit (bit 7) is affected.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Accumulator	$0A	1	2
+Zero Page	$06	2	5
+Zero Page,X	$16	2	6
+Absolute	$0E	3	6
+Absolute,X	$1E	3	7
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Carry (C)
+Set to the value of bit 7 before the shift.
+
+.TP
+.B Zero (Z)
+Set if the result is zero; cleared otherwise.
+
+.TP
+.B Negative (N)
+Set if bit 7 of the result is set; cleared otherwise.
+
+.SH EXAMPLES
+.nf
+    LDA #$40      ; Load accumulator with $40
+    ASL           ; A = $80, C = 0, Z = 0, N = 1
+
+    LDA #$80      ; Load accumulator with $80
+    ASL           ; A = $00, C = 1, Z = 1, N = 0
+.fi
+
+.SH NOTES
+- ASL can be used to multiply unsigned numbers by 2.
+- For multi-byte shifts, use ASL on the least significant byte and ROL on the higher bytes to propagate the carry.
+
+.SH SEE ALSO
+rol(99), lsr(99), ror(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

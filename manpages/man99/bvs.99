@@ -1,0 +1,53 @@
+.TH BVS 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bvs \- Branch if Overflow Set
+
+.SH SYNOPSIS
+.B bvs
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BVS (Branch if Overflow Set) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the overflow flag (V) is set (i.e., equals one).
+
+This instruction is typically used after arithmetic operations that may affect the overflow flag, allowing conditional control flow based on the occurrence of signed overflow.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BVS.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$70	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BVS only checks the overflow flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    CLC          ; Clear carry flag
+    ADC #$40     ; Add 0x40 to accumulator
+    BVS overflow ; Branch if overflow flag is set
+
+    ; code for no overflow continues here
+
+overflow:
+    ; code for overflow occurred
+.fi
+
+.SH NOTES
+- BVS is commonly used after ADC or SBC instructions to branch based on the occurrence of signed overflow.
+- If the branch crosses a page boundary, the CPU requires one extra cycle.
+- The target must be within -128 to +127 bytes of the instruction following BVS.
+
+.SH SEE ALSO
+bvc(99), beq(99), bne(99), adc(99), sbc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

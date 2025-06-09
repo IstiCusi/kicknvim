@@ -1,0 +1,52 @@
+.TH BCC 99 "May 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bcc \- Branch if Carry Clear
+
+.SH SYNOPSIS
+.B bcc
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BCC (Branch if Carry Clear) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the carry flag (C) is clear (i.e., equals zero).
+
+This instruction is used after operations that set or clear the carry flag, such as CMP or SBC, and allows conditional control flow based on unsigned comparisons.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BCC.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$90	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BCC only checks the carry flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    CMP #$10     ; compare accumulator with 0x10
+    BCC less     ; branch if carry is clear (A < $10)
+
+    ; code for A >= $10 continues here
+
+less:
+    ; code for A < $10
+.fi
+
+.SH NOTES
+- BCC is typically used after CMP, CPX, or CPY for unsigned comparisons.
+- If the branch crosses a page boundary, the CPU needs one extra cycle.
+- The target must be within -128 to +127 bytes of the following instruction.
+
+.SH SEE ALSO
+bcs(99), beq(99), bmi(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

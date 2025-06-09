@@ -1,0 +1,65 @@
+.TH RRA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+rra \- Rotate Right Memory, then Add to Accumulator with Carry (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B rra
+\fIaddress\fR
+
+.SH DESCRIPTION
+RRA is an undocumented (illegal) opcode of the MOS 6502 processor. It performs two operations in one instruction:
+
+1. Rotates the memory operand one bit to the right (ROR), where the previous Carry flag is shifted into bit 7, and the old bit 0 is stored into Carry.
+2. Adds the rotated value to the accumulator with carry (ADC), updating A and the status flags accordingly :contentReference[oaicite:2]{index=2}.
+
+This combined operation modifies memory and accumulator in a single instruction.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode Opcode Bytes Cycles
+Zero Page $67 2 5
+Zero Page,X $77 2 6
+Absolute $6F 3 6
+Absolute,X $7F 3 7
+Absolute,Y $7B 3 7
+(Indirect,X) $63 2 8
+(Indirect),Y $73 2 8
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B C  
+Set if the ADC operation results in a carry out (i.e., exceeds 8 bits).
+.TP
+.B Z  
+Set if the result in the accumulator is zero.
+.TP
+.B N  
+Set if bit 7 of the result in the accumulator is set.
+.TP
+.B V  
+Set if the ADC operation causes a signed overflow.
+
+.SH EXAMPLES
+.TP
+.B Decrement and add memory to accumulator
+.nf
+    LDA #$01          ; Load 1 into accumulator
+    SEC               ; Set carry for ADC
+    RRA $10           ; Rotate $10 right, then add to A with carry
+    ; Memory[$10] rotated, A = old A + new M + carry
+.fi
+
+.SH NOTES
+- RRA is undocumented and may not be supported on all MOS variants; behavior is consistent on NMOS 6502.
+- It’s useful for compact code where memory is both processed and summed to the accumulator efficiently.
+- Use with caution — reliance on illegal opcodes reduces portability.
+
+.SH SEE ALSO
+ror(99), adc(99), rla(99), dcp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

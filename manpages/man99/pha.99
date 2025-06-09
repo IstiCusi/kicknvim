@@ -1,0 +1,62 @@
+.TH PHA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+pha \- Push Accumulator onto Stack
+
+.SH SYNOPSIS
+.B pha
+
+.SH DESCRIPTION
+PHA (Push Accumulator) is an instruction of the MOS 6502 processor that pushes the current value of the accumulator (A) onto the stack. This is useful for preserving the accumulator's value before performing operations that may alter it, especially within subroutines or interrupt service routines.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$48	1	3
+.TE
+
+.SH STACK BEHAVIOR
+When executing PHA, the processor performs the following steps:
+1. Stores the current value of the accumulator at the memory location pointed to by the stack pointer (SP) plus $0100.
+2. Decrements the stack pointer by one.
+
+This ensures that the accumulator's value can be retrieved later using the PLA (Pull Accumulator) instruction.
+
+.SH FLAGS AFFECTED
+None. The PHA instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Save and restore accumulator around a subroutine
+.nf
+    PHA          ; Save accumulator
+    JSR subroutine
+    PLA          ; Restore accumulator
+    ; Continue execution
+
+subroutine:
+    ; Perform operations that may alter A
+    RTS
+.fi
+
+.TP
+.B Preserve accumulator during interrupt
+.nf
+interrupt_handler:
+    PHA          ; Save accumulator
+    ; Handle interrupt
+    PLA          ; Restore accumulator
+    RTI          ; Return from interrupt
+.fi
+
+.SH NOTES
+- The stack resides in page $01 (addresses $0100–$01FF). Ensure that there is sufficient stack space to avoid overwriting important data.
+- PHA is commonly used in conjunction with PLA to preserve the accumulator's value across subroutines or interrupts.
+
+.SH SEE ALSO
+pla(99), php(99), plp(99), tsx(99), txs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

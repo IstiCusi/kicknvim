@@ -1,0 +1,44 @@
+.TH CLD 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+cld \- Clear Decimal Mode Flag
+
+.SH SYNOPSIS
+.B cld
+
+.SH DESCRIPTION
+CLD (Clear Decimal) is an instruction of the MOS 6502 processor that clears the decimal mode flag (D) in the processor status register. When the decimal flag is cleared, the processor performs arithmetic operations in binary mode rather than in binary-coded decimal (BCD) mode.
+
+This instruction is commonly used to ensure that the processor is in binary mode before performing arithmetic operations, especially after an interrupt or reset, as the state of the decimal flag may be undefined in such cases.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$D8	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B D
+Cleared to 0.
+
+.SH EXAMPLES
+.TP
+.B Ensure binary mode before addition
+.nf
+    CLD          ; Clear decimal mode
+    LDA #$45     ; Load 0x45 into accumulator
+    ADC #$38     ; Add 0x38 to accumulator in binary mode
+.fi
+
+.SH NOTES
+- CLD is typically used before performing binary arithmetic operations to ensure that the processor is not in decimal mode.
+- It is also commonly used at the beginning of interrupt service routines and after a system reset to establish a known processor state.
+
+.SH SEE ALSO
+sed(99), adc(99), sbc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

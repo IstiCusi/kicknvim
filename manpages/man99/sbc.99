@@ -1,0 +1,47 @@
+.TH SBC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sbc \- Subtract with Carry
+
+.SH SYNOPSIS
+.B sbc
+.I value
+
+.SH DESCRIPTION
+The SBC (Subtract with Carry) instruction subtracts a memory value and the inverse of the carry flag from the accumulator.
+
+It performs A := A - M - (1 - C), where:
+- A = accumulator
+- M = memory value
+- C = carry flag
+
+The result is stored back in the accumulator, and the processor status flags are updated accordingly.
+
+.SH OPCODES
+.TS
+l l.
+Opcode   Addressing Mode
+$E9      Immediate
+$E5      Zero Page
+$F5      Zero Page,X
+$ED      Absolute
+$FD      Absolute,X
+$F9      Absolute,Y
+$E1      (Indirect,X)
+$F1      (Indirect),Y
+.TE
+
+.SH FLAGS AFFECTED
+Negative (N), Zero (Z), Carry (C), Overflow (V)
+
+.SH EXAMPLE
+.nf
+; Subtract 1 from the accumulator with carry set
+SEC        ; set carry (for correct subtraction)
+LDA #$05
+SBC #$01   ; A = $04
+.fi
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

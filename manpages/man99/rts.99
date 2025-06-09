@@ -1,0 +1,49 @@
+.TH RTS 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+rts \- Return from Subroutine
+
+.SH SYNOPSIS
+.B rts
+
+.SH DESCRIPTION
+RTS (ReTurn from Subroutine) retrieves the return address from the stack and resumes execution at that location. It complements the JSR instruction, which pushes a return address before branching to a subroutine :contentReference[oaicite:1]{index=1}.
+
+During JSR:
+1. The address of the instruction following JSR is pushed onto the stack (high byte first, then low byte).
+2. After the subroutine executes and RTS is encountered, the processor:
+   - Increments the stack pointer twice (for high and low bytes).
+   - Pulls the address, adds one, and then continues execution from that resulting address.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode Opcode Bytes Cycles
+Implied $60 1 6
+.TE
+
+.SH FLAGS AFFECTED
+None. RTS does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Simple subroutine return
+.nf
+    JSR subroutine
+    ; execution resumes here after RTS
+
+subroutine:
+    ; do something
+    RTS
+.fi
+
+.SH NOTES
+- The returned address is incremented by one after pulling it from the stack; this ensures execution continues immediately after the original JSR instruction.
+- The stack resides in page $01 ($0100–$01FF); make sure not to overflow during heavy nested calls.
+- For returning from interrupts (not subroutines), the RTI instruction should be used instead.
+
+.SH SEE ALSO
+jsr(99), rti(99), jmp(99), pha(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss

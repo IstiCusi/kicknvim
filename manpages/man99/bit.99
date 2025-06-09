@@ -1,0 +1,68 @@
+.TH BIT 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bit \- Bit Test
+
+.SH SYNOPSIS
+.B bit
+\fIaddress\fR
+
+.SH DESCRIPTION
+BIT (Bit Test) is a non-destructive instruction of the MOS 6502 processor. It performs a bitwise AND between the accumulator and a memory operand, setting the zero flag (Z) accordingly, and transfers bits 7 and 6 of the operand into the negative (N) and overflow (V) flags, respectively.
+
+This instruction is useful for testing specific bits in a memory location without altering the accumulator's value.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Zero Page	$24	2	3
+Absolute	$2C	3	4
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set to bit 7 of the memory operand.
+.TP
+.B V
+Set to bit 6 of the memory operand.
+.TP
+.B Z
+Set if the result of A AND M is zero.
+
+.SH EXAMPLES
+.TP
+.B Test bit 7 (negative flag)
+.nf
+    LDA #$80     ; Load accumulator with 10000000b
+    BIT $00FF    ; Test bit 7 of memory at $00FF
+    BPL skip     ; Branch if bit 7 is clear (N=0)
+.fi
+
+.TP
+.B Test bit 6 (overflow flag)
+.nf
+    BIT $00FF    ; Test bit 6 of memory at $00FF
+    BVC skip     ; Branch if bit 6 is clear (V=0)
+.fi
+
+.TP
+.B Test specific bits with accumulator mask
+.nf
+    LDA #%00001100  ; Mask to test bits 2 and 3
+    BIT $00FF       ; Test bits 2 and 3 of memory at $00FF
+    BEQ skip        ; Branch if both bits are clear
+.fi
+
+.SH NOTES
+- BIT is commonly used to test status bits in memory-mapped I/O registers.
+- The instruction does not modify the accumulator or the memory operand.
+- Only the N, V, and Z flags are affected; other flags remain unchanged.
+
+.SH SEE ALSO
+and(99), ora(99), eor(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

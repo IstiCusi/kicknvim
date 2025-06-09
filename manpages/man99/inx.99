@@ -1,0 +1,64 @@
+.TH INX 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+inx \- Increment X Register
+
+.SH SYNOPSIS
+.B inx
+
+.SH DESCRIPTION
+INX (Increment X Register) increments the value in the X index register by one. The result wraps around if it overflows:
+- If the X register is 0xFF, incrementing wraps it to 0x00.
+- For signed values, incrementing 0x7F (+127) wraps to 0x80 (-128).
+
+This instruction is useful for implementing loops, indexing arrays, and traversing memory.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$E8	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if bit 7 of the result is set (i.e., result is negative).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Simple loop using X register
+.nf
+    LDX #$00     ; Initialize X to 0
+loop:
+    ; Perform operations
+    INX          ; Increment X
+    CPX #$10     ; Compare X to 16
+    BNE loop     ; Loop until X equals 16
+.fi
+
+.TP
+.B Wrapping behavior
+.nf
+    LDX #$FF     ; Load 255 into X
+    INX          ; Increment X (wraps to 0)
+    BEQ wrapped  ; Branch if result is zero
+
+wrapped:
+    ; Handle wrap-around case
+.fi
+
+.SH NOTES
+- INX does not affect the Carry (C) or Overflow (V) flags.
+- It operates directly on the X register; to increment memory locations, use INC.
+- For incrementing the Y register, use INY.
+
+.SH SEE ALSO
+inx(99), dex(99), inc(99), iny(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

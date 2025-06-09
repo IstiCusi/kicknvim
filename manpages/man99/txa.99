@@ -1,0 +1,46 @@
+
+.TH TXA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+txa \- Transfer X Register to Accumulator
+
+.SH SYNOPSIS
+.B txa
+
+.SH DESCRIPTION
+TXA (Transfer X to Accumulator) copies the value of the X index register into the accumulator (A). It updates the Zero and Negative flags based on the new accumulator value.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode  Opcode  Bytes  Cycles
+Implied          $8A     1      2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Z  
+Set if A = 0.
+.TP
+.B N  
+Set if bit 7 of A is set (negative in two's complement).
+
+.SH EXAMPLE
+.nf
+    LDX #$05
+    TXA          ; A = $05, Z=0, N=0
+
+    LDX #$00
+    TXA          ; A = $00, Z=1, N=0
+.fi
+
+.SH NOTES
+- Commonly used to move index data into the accumulator for arithmetic or output.
+- Does not modify the X register.
+- Flags are determined by the copied value.
+
+.SH SEE ALSO
+tax(99), tya(99), inx(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss

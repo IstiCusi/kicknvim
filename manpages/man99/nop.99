@@ -1,0 +1,57 @@
+.TH NOP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+nop \- No Operation
+
+.SH SYNOPSIS
+.B nop
+
+.SH DESCRIPTION
+NOP (No Operation) is an instruction of the MOS 6502 processor that performs no action other than advancing the program counter by one instruction. It consumes two clock cycles and does not alter any registers, memory locations, or processor flags.
+
+This instruction is useful for:
+- **Timing adjustments**: Introducing precise delays in code execution.
+- **Code alignment**: Ensuring that subsequent instructions align to specific memory boundaries.
+- **Debugging**: Replacing instructions with NOPs to isolate and test code segments.
+- **Patching**: Overwriting existing instructions without altering the overall program structure.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$EA	1	2
+.TE
+
+.SH FLAGS AFFECTED
+None. The NOP instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Introduce a delay
+.nf
+    NOP          ; Delay for 2 clock cycles
+    NOP          ; Additional delay
+.fi
+
+.TP
+.B Patch out an instruction
+.nf
+    ; Original code
+    LDA #$01     ; Load 1 into accumulator
+
+    ; Patched code
+    NOP          ; Replaces LDA #$01
+.fi
+
+.SH NOTES
+- On the NMOS 6502, NOP is officially represented by the opcode $EA.
+- Several undocumented opcodes (e.g., $1A, $3A, $5A, $7A, $DA, $FA) function similarly to NOP but may have different behaviors and are not recommended for general use.
+- The CMOS 65C02 processor defines additional NOP instructions with varying lengths and cycle counts.
+- Use caution when employing undocumented NOPs, as their behavior may not be consistent across different processor variants.
+
+.SH SEE ALSO
+brk(99), jmp(99), rti(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

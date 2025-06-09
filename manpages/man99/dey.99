@@ -1,0 +1,63 @@
+.TH DEY 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+dey \- Decrement Y Register
+
+.SH SYNOPSIS
+.B dey
+
+.SH DESCRIPTION
+DEY (Decrement Y Register) is an instruction of the MOS 6502 processor that subtracts one from the Y index register. The result wraps around if it underflows:
+- If the Y register is 0x00, decrementing wraps it to 0xFF.
+- For signed values, decrementing 0x80 (-128) wraps to 0x7F (+127).
+
+This instruction is useful for implementing countdown loops or adjusting index counters.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$88	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Countdown loop using Y register
+.nf
+    LDY #$05     ; Load 5 into Y register
+loop:
+    ; Perform operations
+    DEY          ; Decrement Y register
+    BNE loop     ; Branch if result is not zero
+.fi
+
+.TP
+.B Decrementing Y register to zero
+.nf
+    LDY #$01     ; Load 1 into Y register
+    DEY          ; Decrement Y register to 0
+    BEQ done     ; Branch if result is zero
+
+done:
+    ; Continue execution
+.fi
+
+.SH NOTES
+- DEY does not affect the Carry (C) or Overflow (V) flags.
+- It operates directly on the Y register; to decrement memory locations, use DEC.
+- For decrementing the X register, use DEX.
+
+.SH SEE ALSO
+iny(99), dex(99), dec(99), inx(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

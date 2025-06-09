@@ -1,0 +1,42 @@
+.TH CLC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+clc \- Clear Carry Flag
+
+.SH SYNOPSIS
+.B clc
+
+.SH DESCRIPTION
+CLC (Clear Carry) is an instruction of the MOS 6502 processor that unconditionally clears the carry flag (C) in the processor status register. This instruction is commonly used before performing addition operations to ensure that no residual carry affects the result.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$18	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B C
+Cleared to 0.
+
+.SH EXAMPLES
+.TP
+.B Prepare for addition
+.nf
+    CLC          ; Clear carry flag before addition
+    LDA #$10     ; Load 0x10 into accumulator
+    ADC #$20     ; Add 0x20 to accumulator with cleared carry
+.fi
+
+.SH NOTES
+- CLC is typically used before ADC (Add with Carry) to ensure accurate addition without unintended carry from previous operations.
+- It is also used before multi-byte addition routines to clear the carry flag before starting the addition process.
+
+.SH SEE ALSO
+sec(99), adc(99), sbc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

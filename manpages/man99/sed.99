@@ -1,0 +1,45 @@
+.TH SED 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sed \- Set Decimal Mode Flag
+
+.SH SYNOPSIS
+.B sed
+
+.SH DESCRIPTION
+SED (Set Decimal Mode) sets the Decimal Mode flag (D) in the processor status register. When this flag is set, the processor performs **binary-coded decimal (BCD)** arithmetic for ADC and SBC instructions.
+
+This mode is used for precise decimal arithmetic operations, often required in financial calculations.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$F8	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.B D  
+Set to 1 (enable BCD mode).
+
+.SH EXAMPLE
+.nf
+    SED           ; Enable decimal mode
+    CLC           ; Clear carry
+    LDA #$45      ; Load 45 (decimal)
+    ADC #$55      ; BCD addition → 45 + 55 = 100 → A = $00, C = 1
+
+    CLD           ; Clear decimal mode afterward
+.fi
+
+.SH NOTES
+- Always clear the decimal flag (using CLD) before returning from interrupts or initiating other arithmetic to avoid unintended BCD behavior.
+- The behavior of flags N, Z, and C can differ when in decimal mode, depending on implementation.
+- On the NMOS 6502, the decimal flag is **not** automatically cleared on interrupt or reset.
+
+.SH SEE ALSO
+cld(99), adc(99), sbc(99), sed(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

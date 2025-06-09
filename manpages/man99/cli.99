@@ -1,0 +1,49 @@
+.TH CLI 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+cli \- Clear Interrupt Disable Flag
+
+.SH SYNOPSIS
+.B cli
+
+.SH DESCRIPTION
+CLI (Clear Interrupt Disable) is an instruction of the MOS 6502 processor that clears the interrupt disable flag (I) in the processor status register. When the I flag is cleared, the processor is enabled to respond to maskable interrupts (IRQ). This instruction is commonly used at the end of an interrupt service routine (ISR) or in the main program to re-enable interrupts after they have been disabled.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$58	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B I
+Cleared to 0.
+
+.SH EXAMPLES
+.TP
+.B Enable interrupts
+.nf
+    CLI          ; Clear interrupt disable flag to enable IRQs
+.fi
+
+.TP
+.B Typical usage in an interrupt service routine
+.nf
+    ; ... ISR code ...
+    CLI          ; Re-enable interrupts
+    RTI          ; Return from interrupt
+.fi
+
+.SH NOTES
+- CLI is used to enable maskable interrupts by clearing the I flag.
+- It is often paired with SEI (Set Interrupt Disable) to disable interrupts when entering a critical section and CLI to re-enable them afterward.
+- Non-maskable interrupts (NMI) are not affected by the state of the I flag and can occur regardless of its value.
+
+.SH SEE ALSO
+sei(99), rti(99), irq(99), nmi(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

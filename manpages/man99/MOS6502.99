@@ -1,0 +1,37 @@
+.TH MOS6502 99 "June 2025" "MOS Technology 6502" "Kick'N'Vim Manual"
+
+.SH NAME
+MOS6502 \- 8‑bit microprocessor by MOS Technology
+
+.SH SYNOPSIS
+Introduced in 1975, the MOS Technology 6502 is a compact, efficient, and cost-effective 8‑bit CPU that powered early home computers, game consoles, and embedded systems.
+
+.SH DESCRIPTION
+The 6502 microprocessor was designed by Chuck Peddle and his team after leaving Motorola. It offered a full-featured architecture comparable to the Motorola 6800 at a price of only $25, making it one of the most influential chips in computing history.
+
+Core architectural features:
+- **Registers**: A (accumulator), X and Y (index), SP (stack pointer), P (status), and PC (program counter)
+- **Address Bus**: 16-bit, enabling access to 64KB memory
+- **Instruction Set**: 56 official instructions plus numerous unofficial opcodes
+- **Addressing Modes**: 13 different modes including zero page, absolute, indexed, and indirect
+- **Clock Speed**: Typically 1–3 MHz depending on the system
+- **Instruction Efficiency**: Many operations execute in 2–3 cycles
+
+.SH SYSTEMS THAT USED THE 6502
+- Apple II
+- Atari 2600, Atari 800
+- Commodore PET, VIC-20, Commodore 64 (via 6510 variant)
+- BBC Micro
+- Nintendo Entertainment System (via Ricoh 2A03)
+
+.SH LEGACY
+The 6502 revolutionized the CPU market by offering high performance at low cost. It set the stage for affordable personal computing and influenced the design of many later CPUs.
+
+Its architecture is still studied and used in embedded systems through CMOS successors like the WDC 65C02.
+
+.SH SEE ALSO
+6510(99), 65C02(99), C64(99), NES(99), AppleII(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

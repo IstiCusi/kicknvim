@@ -1,0 +1,76 @@
+.TH CMP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+cmp \- Compare Accumulator with Memory
+
+.SH SYNOPSIS
+.B cmp
+\fIvalue\fR
+
+.SH DESCRIPTION
+CMP (Compare) compares the contents of the accumulator with a specified value or memory location. It performs a subtraction of the operand from the accumulator without storing the result; only the processor status flags are affected.
+
+This instruction is useful for making decisions based on the comparison of two values. After execution, the Zero (Z), Negative (N), and Carry (C) flags are set according to the result, allowing for conditional branching.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Immediate	$C9	2	2
+Zero Page	$C5	2	3
+Zero Page,X	$D5	2	4
+Absolute	$CD	3	4
+Absolute,X	$DD	3	4 (+1 if page crossed)
+Absolute,Y	$D9	3	4 (+1 if page crossed)
+Indirect,X	$C1	2	6
+Indirect,Y	$D1	2	5 (+1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result of the subtraction has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result of the subtraction is zero (i.e., accumulator equals operand).
+.TP
+.B C
+Set if the accumulator is greater than or equal to the operand; cleared if less.
+
+.SH EXAMPLES
+.TP
+.B Compare accumulator with immediate value
+.nf
+    LDA #$10     ; Load 0x10 into accumulator
+    CMP #$10     ; Compare accumulator with 0x10
+    BEQ equal    ; Branch if equal
+
+equal:
+    ; Code for equal case
+.fi
+
+.TP
+.B Compare accumulator with memory value
+.nf
+    LDA #$20     ; Load 0x20 into accumulator
+    CMP $00FF    ; Compare accumulator with value at memory address $00FF
+    BCC less     ; Branch if accumulator is less than memory value
+
+less:
+    ; Code for less-than case
+.fi
+
+.SH NOTES
+- CMP is functionally similar to performing a subtraction (A - M) without storing the result.
+- The instruction affects the processor status flags, which can be used with conditional branch instructions like BEQ, BNE, BCC, and BCS to control program flow.
+- When comparing unsigned values:
+  - If A >= M, the Carry flag is set.
+  - If A < M, the Carry flag is cleared.
+- For signed comparisons, additional logic is required as the CMP instruction does not account for signed overflow.
+
+.SH SEE ALSO
+cpx(99), cpy(99), beq(99), bne(99), bcc(99), bcs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

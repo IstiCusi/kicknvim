@@ -1,0 +1,71 @@
+.TH CPX 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+cpx \- Compare X Register with Memory
+
+.SH SYNOPSIS
+.B cpx
+\fIvalue\fR
+
+.SH DESCRIPTION
+CPX (Compare X Register) compares the contents of the X index register with a specified value or memory location. It performs a subtraction of the operand from the X register without storing the result; only the processor status flags are affected.
+
+This instruction is useful for making decisions based on the comparison of the X register with another value. After execution, the Zero (Z), Negative (N), and Carry (C) flags are set according to the result, allowing for conditional branching.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Immediate	$E0	2	2
+Zero Page	$E4	2	3
+Absolute	$EC	3	4
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result of the subtraction has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result of the subtraction is zero (i.e., X register equals operand).
+.TP
+.B C
+Set if the X register is greater than or equal to the operand; cleared if less.
+
+.SH EXAMPLES
+.TP
+.B Compare X register with immediate value
+.nf
+    LDX #$10     ; Load 0x10 into X register
+    CPX #$10     ; Compare X register with 0x10
+    BEQ equal    ; Branch if equal
+
+equal:
+    ; Code for equal case
+.fi
+
+.TP
+.B Compare X register with memory value
+.nf
+    LDX #$20     ; Load 0x20 into X register
+    CPX $00FF    ; Compare X register with value at memory address $00FF
+    BCC less     ; Branch if X register is less than memory value
+
+less:
+    ; Code for less-than case
+.fi
+
+.SH NOTES
+- CPX is functionally similar to performing a subtraction (X - M) without storing the result.
+- The instruction affects the processor status flags, which can be used with conditional branch instructions like BEQ, BNE, BCC, and BCS to control program flow.
+- When comparing unsigned values:
+  - If X >= M, the Carry flag is set.
+  - If X < M, the Carry flag is cleared.
+- For signed comparisons, additional logic is required as the CPX instruction does not account for signed overflow.
+
+.SH SEE ALSO
+cmp(99), cpy(99), beq(99), bne(99), bcc(99), bcs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

@@ -1,0 +1,66 @@
+.TH LSR 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+lsr \- Logical Shift Right
+
+.SH SYNOPSIS
+.B lsr
+[\fIaddress\fR]
+
+.SH DESCRIPTION
+LSR (Logical Shift Right) shifts each bit of its operand one position to the right. The bit shifted out from bit 0 is stored in the Carry flag, and bit 7 is set to 0. This operation effectively divides the operand by 2, treating it as an unsigned value.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Accumulator	$4A	1	2
+Zero Page	$46	2	5
+Zero Page,X	$56	2	6
+Absolute	$4E	3	6
+Absolute,X	$5E	3	7
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B C
+Set to the value of the bit shifted out (original bit 0).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+.TP
+.B N
+Always cleared (since the result's bit 7 is set to 0).
+
+.SH EXAMPLES
+.TP
+.B Shift accumulator right
+.nf
+    LDA #$04     ; A = 00000100
+    LSR A        ; A = 00000010, C = 0
+.fi
+
+.TP
+.B Shift memory location
+.nf
+    LSR $10      ; Shift value at address $10 right by one bit
+.fi
+
+.TP
+.B Shift with indexing
+.nf
+    LSR $10,X    ; Shift value at address $10 + X right by one bit
+.fi
+
+.SH NOTES
+- LSR is useful for dividing unsigned numbers by 2.
+- For signed numbers, use arithmetic shift instructions to preserve the sign bit.
+- The accumulator mode (`LSR A`) operates directly on the accumulator.
+- Memory modes read the value, shift it, and write it back to the same location.
+
+.SH SEE ALSO
+asl(99), rol(99), ror(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

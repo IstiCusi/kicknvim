@@ -1,0 +1,52 @@
+.TH BRK 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+brk \- Software Interrupt (Break)
+
+.SH SYNOPSIS
+.B brk
+
+.SH DESCRIPTION
+BRK (Break) is a software interrupt instruction of the MOS 6502 processor. It causes the processor to perform an interrupt sequence similar to a hardware interrupt, allowing the program to transfer control to an interrupt handler.
+
+Upon execution, BRK performs the following operations:
+
+1. Increments the program counter (PC) by two.
+2. Pushes the high and low bytes of the incremented PC onto the stack.
+3. Pushes the processor status register (with the break flag set) onto the stack.
+4. Sets the interrupt disable flag (I).
+5. Loads the interrupt vector from memory addresses $FFFE (low byte) and $FFFF (high byte) into the PC, transferring control to the interrupt handler.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$00	1	7
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B B
+Set in the copy of the status register pushed to the stack.
+.TP
+.B I
+Set to disable further interrupts.
+
+.SH EXAMPLES
+.TP
+.B Trigger a software interrupt
+.nf
+    BRK          ; Invoke the interrupt handler at address stored in $FFFE/$FFFF
+.fi
+
+.SH NOTES
+- BRK is commonly used for debugging purposes or to invoke system routines.
+- The byte following the BRK instruction is often used as a signature or identifier, although BRK itself is a one-byte instruction.
+- The return address pushed onto the stack points to the byte after the signature byte, requiring special handling in the interrupt routine if the signature is to be used.
+
+.SH SEE ALSO
+rti(99), irq(99), nmi(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

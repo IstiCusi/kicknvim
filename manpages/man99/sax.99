@@ -1,0 +1,37 @@
+.TH SAX 99 "June 2025" "MOS 6502 Undocumented Opcode" "Kick'N'Vim Manual"
+
+.SH NAME
+sax \- Store Accumulator AND X
+
+.SH SYNOPSIS
+.B sax
+.I addr
+
+.SH DESCRIPTION
+The SAX instruction stores the logical AND of the accumulator and the X register in memory.
+
+It is an undocumented instruction on the 6502 CPU and may not be supported on all variants. It is used in self-modifying code or advanced memory manipulation.
+
+.SH OPCODES
+.TS
+l l.
+Opcode   Addressing Mode
+$83      (Indirect,X)
+$87      Zero Page
+$8F      Absolute
+$97      Zero Page,Y
+.TE
+
+.SH FLAGS AFFECTED
+None
+
+.SH EXAMPLE
+.nf
+; Assuming A = $CC and X = $AA
+SAX $10
+; stores $88 (A AND X) into address $10
+.fi
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

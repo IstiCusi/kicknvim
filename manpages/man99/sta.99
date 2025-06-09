@@ -1,0 +1,44 @@
+.TH STA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sta \- Store Accumulator into Memory
+
+.SH SYNOPSIS
+.B sta
+.I operand
+
+.SH DESCRIPTION
+STA (Store Accumulator) writes the contents of the accumulator to memory. The accumulator remains unchanged.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode        Opcode  Bytes  Cycles
+Zero Page              $85     2      3
+Zero Page,X            $95     2      4
+Absolute               $8D     3      4
+Absolute,X             $9D     3      5
+Absolute,Y             $99     3      5
+Indirect,X             $81     2      6
+Indirect,Y             $91     2      6
+.TE
+
+.SH FLAGS AFFECTED
+None.
+
+.SH EXAMPLES
+.nf
+    LDA #$42
+    STA $2000       ; Stores value $42 at address $2000
+.fi
+
+.SH NOTES
+- Commonly used in memory-mapped I/O or data buffering.
+- Does not modify any processor flags.
+
+.SH SEE ALSO
+lda(99), stx(99), sty(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

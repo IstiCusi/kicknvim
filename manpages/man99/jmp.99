@@ -1,0 +1,85 @@
+.TH JMP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+jmp \- Unconditional Jump
+
+.SH SYNOPSIS
+.B jmp
+\fIaddress\fR
+
+.SH DESCRIPTION
+JMP (Jump) is an instruction of the MOS 6502 processor that sets the program counter to a specified address, causing execution to continue from that location. It performs an unconditional jump, meaning it always transfers control to the target address without evaluating any conditions.
+
+This instruction is useful for implementing loops, branching to different parts of a program, or skipping over sections of code.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Absolute	$4C	3	3
+Indirect	$6C	3	5
+.TE
+
+.SH ADDRESSING MODES
+.TP
+.B Absolute
+The target address is specified directly in the instruction. For example:
+.nf
+    JMP $1234
+.fi
+This sets the program counter to $1234.
+
+.TP
+.B Indirect
+The instruction specifies a memory location that contains the target address. For example:
+.nf
+    JMP ($1234)
+.fi
+This reads the 16-bit address stored at memory locations $1234 and $1235 and sets the program counter to that address.
+
+Note: Due to a hardware bug in the original 6502 processor, if the indirect vector falls on a page boundary (i.e., the low byte of the address is $FF), the high byte of the target address is fetched from the beginning of the same page instead of the next page. For example, `JMP ($12FF)` will fetch the low byte from $12FF and the high byte from $1200, not $1300. This bug was corrected in the CMOS 65C02 processor.
+
+.SH FLAGS AFFECTED
+None. The JMP instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Simple jump
+.nf
+    JMP start
+start:
+    ; Execution continues here
+.fi
+
+.TP
+.B Jump table using indirect addressing
+.nf
+    ; Assume X contains an index (0, 2, 4, ...)
+    LDX #$02
+    JMP (jump_table,X)
+jump_table:
+    .word routine0, routine1, routine2
+routine0:
+    ; Code for routine 0
+    RTS
+routine1:
+    ; Code for routine 1
+    RTS
+routine2:
+    ; Code for routine 2
+    RTS
+.fi
+
+This example uses a jump table to select a routine based on the value in the X register.
+
+.SH NOTES
+- JMP is equivalent to a GOTO statement in high-level languages; it does not save the return address.
+- For subroutine calls that require returning to the caller, use the JSR (Jump to Subroutine) instruction instead.
+- Be cautious when using indirect addressing near page boundaries due to the original 6502 bug mentioned above.
+
+.SH SEE ALSO
+jsr(99), rts(99), beq(99), bne(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

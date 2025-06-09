@@ -1,0 +1,43 @@
+
+.TH ZERO 99 "June 2025" "MOS 6502 Status Flags" "Kick'N'Vim Manual"
+
+.SH NAME
+zero \- Zero Flag (Z)
+
+.SH DESCRIPTION
+The Zero Flag (Z) in the MOS 6502 CPU indicates whether the result of the last arithmetic or logical operation was zero. When the result is exactly zero, the Z flag is set (1); otherwise, it is cleared (0) :contentReference[oaicite:1]{index=1}.
+
+This flag is critical for conditional flow control—branch instructions like BEQ (branch if equal) or BNE (branch if not equal) depend on Z to determine the next execution path.
+
+.SH AFFECTED OPERATIONS
+- Arithmetic: ADC, SBC
+- Logical: AND, EOR, ORA
+- Data transfer: LDA, LDX, LDY
+- Increment/decrement: INC, INX, INY, DEC, DEX, DEY
+- Comparisons: CMP, CPX, CPY (these perform a subtraction without saving the result but update Z)
+
+.SH SYNOPSIS
+.Br BEQ target
+.Br BNE target
+
+.SH EXAMPLE
+.nf
+    LDA #$05
+    BEQ not_zero    ; Z=0 → skip
+    LDA #$00
+    BEQ is_zero     ; Z=1 → branch
+
+is_zero:
+    ; result was zero
+.fi
+
+.SH NOTES
+- Compare instructions (CMP/CPX/CPY) update Z based on subtraction without storing the result.
+- Z is automatically set/cleared by many operations—explicit testing is usually unnecessary.
+- Use BEQ or BNE to drive logic based on whether a value is zero.
+
+.SH SEE ALSO
+beq(99), bne(99), cmp(99), lda(99), adc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss

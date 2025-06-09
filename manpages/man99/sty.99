@@ -1,0 +1,41 @@
+.TH STY 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sty \- Store Y Register into Memory
+
+.SH SYNOPSIS
+.B sty
+.I operand
+
+.SH DESCRIPTION
+STY (Store Y Register) writes the contents of the Y index register to a memory location. The Y register remains unchanged after the operation.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode        Opcode  Bytes  Cycles
+Zero Page              $84     2      3
+Zero Page,X            $94     2      4
+Absolute               $8C     3      4
+.TE
+
+.SH FLAGS AFFECTED
+None.
+
+.SH EXAMPLES
+.nf
+    LDY #$5A
+    STY $20         ; Stores A ($5A) in memory at address $0020
+.fi
+
+.SH NOTES
+- Useful for storing Y-based index values or counters in memory.
+- Does not modify any processor flags.
+- Indexed mode allows storing relative to the X register.
+
+.SH SEE ALSO
+ldy(99), sta(99), stx(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

@@ -1,0 +1,40 @@
+.TH SEI 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+sei \- Set Interrupt Disable Flag
+
+.SH SYNOPSIS
+.B sei
+
+.SH DESCRIPTION
+SEI (Set Interrupt disable) is an instruction of the MOS 6502 processor that sets the interrupt disable flag (I) in the processor status register. When this flag is set, maskable IRQ interrupts are ignored. Non-maskable interrupts (NMIs) and reset signals still function normally.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$78	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.B I  
+Set to 1 (disable IRQ interrupts).
+
+.SH EXAMPLE
+.nf
+    SEI           ; Disable further IRQ interrupts
+    ; Critical code here – interrupts are masked
+    CLI           ; Re-enable interrupts when done
+.fi
+
+.SH NOTES
+- Often used to protect critical sections or interrupt routines.
+- A pending interrupt may still trigger after the next instruction—it's not affected by SEI executed within two cycles of the interrupt instruction.
+- Use RTI to restore interrupt enable state when exiting an interrupt service routine.
+
+.SH SEE ALSO
+cli(99), rti(99), irq(99), cli(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

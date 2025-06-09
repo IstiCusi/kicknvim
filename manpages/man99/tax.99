@@ -1,0 +1,46 @@
+.TH TAX 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+tax \- Transfer Accumulator to X Register
+
+.SH SYNOPSIS
+.B tax
+
+.SH DESCRIPTION
+TAX (Transfer Accumulator to X) copies the value of the A register into the X index register. It updates the Zero and Negative flags based on the transferred value.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode  Opcode  Bytes  Cycles
+Implied          $AA     1      2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Z  
+Set if X = 0.
+.TP
+.B N  
+Set if bit 7 of X is set (negative in two's complement).
+
+.SH EXAMPLE
+.nf
+    LDA #$05
+    TAX          ; X = $05, Z=0, N=0
+
+    LDA #$00
+    TAX          ; X = $00, Z=1, N=0
+.fi
+
+.SH NOTES
+- Commonly used to set up pointers or indices based on accumulator contents.
+- Does not modify the accumulator.
+- Flags are updated as though X was directly loaded with a value.
+
+.SH SEE ALSO
+txa(99), tay(99), lda(99), ldx(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

@@ -1,0 +1,43 @@
+.TH SBX 99 "June 2025" "MOS 6502 Undocumented Opcode" "Kick'N'Vim Manual"
+
+.SH NAME
+sbx \- Subtract with Borrow into X Register (Undocumented)
+
+.SH SYNOPSIS
+.B sbx
+.I #value
+
+.SH DESCRIPTION
+The SBX instruction performs a bitwise AND between the accumulator and the X register, then subtracts the given immediate value from the result. The final value is stored in the X register.
+
+Effectively:
+.nf
+    X := (A & X) - immediate
+.fi
+
+This is an undocumented instruction available on the 6502 processor. It may not function reliably on all systems and is primarily used in advanced or low-level routines.
+
+.SH OPCODES
+.TS
+l l.
+Opcode   Addressing Mode
+$CB      Immediate
+.TE
+
+.SH FLAGS AFFECTED
+- Negative (N)
+- Zero (Z)
+- Carry (C)
+
+Overflow and Decimal flags are not affected.
+
+.SH EXAMPLE
+.nf
+    LDA #$0F
+    LDX #$0C
+    SBX #$03    ; (0F AND 0C) = 0C, 0C - 03 = 09 → X = $09
+.fi
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

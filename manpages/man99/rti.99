@@ -1,0 +1,62 @@
+.TH RTI 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+rti \- Return from Interrupt
+
+.SH SYNOPSIS
+.B rti
+
+.SH DESCRIPTION
+RTI (ReTurn from Interrupt) restores processor state after an interrupt. It retrieves the processor status register (P) and program counter (PC) from the stack, allowing execution to resume where it was interrupted :contentReference[oaicite:1]{index=1}.
+
+During an interrupt:
+1. The processor pushes PC (high‑then‑low) and the status register onto the stack.
+2. After handling the interrupt, RTI pulls the status and PC back in reverse order, then continues execution at the restored PC.
+
+Unlike RTS, RTI also restores the processor flags (including Break/unused bits), making it suited for interrupt handlers.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode Opcode Bytes Cycles
+Implied $40 1 6
+.TE
+
+.SH FLAGS AFFECTED
+.RTICKET
+All flags are restored to the values they held when the interrupt occurred.
+
+.SH EXAMPLES
+.TP
+.B Interrupt handler skeleton
+.nf
+    RTI            ; Return from interrupt (after RTI, execution resumes where it left off)
+.fi
+
+In typical use:
+
+.nf
+interrupt_handler:
+    PHP            ; Save status
+    PHA            ; Save A
+    PHA            ; Save X
+    PHA            ; Save Y
+    ; Perform interrupt-specific tasks
+    PLA            ; Restore Y
+    PLA            ; Restore X
+    PLA            ; Restore A
+    PLP            ; Restore status register
+    RTI            ; Return from interrupt
+.fi
+
+.SH NOTES
+- Only RTI (not RTS) is used to return from interrupts.
+- RTI re-enables IRQs if they were enabled before the interrupt.
+- It restores the Break flag from the stack, but this flag is unused during execution.
+
+.SH SEE ALSO
+pha(99), pla(99), php(99), plp(99), rts(99), brk(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

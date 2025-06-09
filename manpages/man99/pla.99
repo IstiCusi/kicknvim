@@ -1,0 +1,67 @@
+.TH PLA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+pla \- Pull Accumulator from Stack
+
+.SH SYNOPSIS
+.B pla
+
+.SH DESCRIPTION
+PLA (Pull Accumulator) is an instruction of the MOS 6502 processor that retrieves a byte from the stack and stores it in the accumulator (A). This is commonly used to restore the accumulator's value after it has been saved onto the stack using the PHA (Push Accumulator) instruction.
+
+Upon execution, PLA performs the following steps:
+1. Increments the stack pointer by one.
+2. Loads the byte at the new stack location into the accumulator.
+
+This operation affects the Zero and Negative flags based on the value retrieved.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$68	1	4
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if bit 7 of the retrieved value is set; cleared otherwise.
+.TP
+.B Z
+Set if the retrieved value is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Restore accumulator after subroutine
+.nf
+    PHA          ; Save accumulator
+    JSR subroutine
+    PLA          ; Restore accumulator
+    ; Continue execution
+
+subroutine:
+    ; Perform operations that may alter A
+    RTS
+.fi
+
+.TP
+.B Restore accumulator during interrupt
+.nf
+interrupt_handler:
+    PHA          ; Save accumulator
+    ; Handle interrupt
+    PLA          ; Restore accumulator
+    RTI          ; Return from interrupt
+.fi
+
+.SH NOTES
+- The stack resides in page $01 (addresses $0100–$01FF). Ensure that there is sufficient stack space to avoid overwriting important data.
+- PLA is commonly used in conjunction with PHA to preserve the accumulator's value across subroutines or interrupts.
+- The instruction affects the Zero and Negative flags based on the value pulled from the stack.
+
+.SH SEE ALSO
+pha(99), php(99), plp(99), tsx(99), txs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

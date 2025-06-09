@@ -1,0 +1,67 @@
+.TH ISC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+isc \- Increment Memory and Subtract with Carry (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B isc
+\fIaddress\fR
+
+.SH DESCRIPTION
+ISC (Increment Memory and Subtract with Carry) is an undocumented instruction of the MOS 6502 processor that combines the functionality of INC (Increment Memory) and SBC (Subtract with Carry) into a single operation. It increments the value at the specified memory location by one and then subtracts the result, along with the carry flag, from the accumulator.
+
+This instruction is particularly useful for implementing certain operations more efficiently, such as decrementing a 16-bit pointer or performing combined increment and subtraction operations in fewer cycles.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Indexed Indirect (Indirect,X)	$E3	2	8
+Zero Page	$E7	2	5
+Zero Page,X	$F7	2	6
+Absolute	$EF	3	6
+Absolute,X	$FF	3	7
+Absolute,Y	$FB	3	7
+Indirect Indexed (Indirect),Y	$F3	2	8
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result of the subtraction has bit 7 set (i.e., result is negative).
+.TP
+.B V
+Set if the subtraction results in an overflow.
+.TP
+.B Z
+Set if the result of the subtraction is zero; cleared otherwise.
+.TP
+.B C
+Set if the subtraction does not require a borrow; cleared if a borrow is needed.
+
+.SH EXAMPLES
+.TP
+.B Decrementing a 16-bit pointer
+.nf
+    LDA #$FF
+    SEC
+    ISC pointer       ; Increment memory at 'pointer', then subtract from A
+    BNE skip
+    DEC pointer+1     ; Decrease high byte if low byte underflowed
+skip:
+    ; Continue execution
+.fi
+
+This approach uses fewer cycles and bytes compared to separate INC and SBC instructions.
+
+.SH NOTES
+- ISC is an undocumented opcode and may not be supported on all 6502 variants.
+- Its behavior is consistent across many NMOS 6502 processors but is not guaranteed on CMOS versions like the 65C02.
+- Use with caution, as relying on undocumented instructions can affect portability and compatibility.
+
+.SH SEE ALSO
+inc(99), sbc(99), dcp(99), slo(99), rla(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

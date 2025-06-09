@@ -1,0 +1,62 @@
+.TH ARR 99 "May 2025" "MOS 6502 Undocumented Opcodes" "Kick'N'Vim Manual"
+
+.SH NAME
+arr \- AND Accumulator with Immediate then Rotate Right
+
+.SH SYNOPSIS
+.B arr
+\fI#immediate\fR
+
+.SH DESCRIPTION
+ARR is an undocumented instruction of the MOS 6502 processor. It performs a bitwise AND between the accumulator and an immediate value, then rotates the result one bit to the right. This operation combines the functionality of the AND and ROR instructions.
+
+The behavior of ARR is as follows:
+
+1. Perform a bitwise AND between the accumulator and the immediate operand.
+2. Rotate the result one bit to the right.
+3. The final result is stored back in the accumulator.
+
+This instruction is equivalent to executing an AND operation followed by a Rotate Right (ROR) on the accumulator.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Immediate	$6B	2	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Carry (C)
+Set to the value of bit 0 of the result (i.e., the bit shifted out).
+
+.TP
+.B Zero (Z)
+Set if the result is zero; cleared otherwise.
+
+.TP
+.B Negative (N)
+Set if bit 7 of the result is set; cleared otherwise.
+
+.TP
+.B Overflow (V)
+Set if bit 6 of the result is exclusive ORed with bit 5; cleared otherwise.
+
+.SH EXAMPLES
+.nf
+    LDA #$FF      ; Load accumulator with $FF
+    ARR #$0F      ; A = ($FF AND $0F) >> 1 = $07
+    ; Result: A = $07, C = 1, Z = 0, N = 0
+.fi
+
+.SH NOTES
+- ARR is an undocumented instruction and may not be supported on all 6502 variants.
+- Its behavior is consistent on NMOS 6502 processors but may differ on CMOS versions like the 65C02.
+- Use with caution in cross-platform applications.
+
+.SH SEE ALSO
+and(99), ror(99), alr(99), anc(99)
+
+.SH AUTHOR
+Adapted and for manpage usage by Stephan P. A. Strauss
+

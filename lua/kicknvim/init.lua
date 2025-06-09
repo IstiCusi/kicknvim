@@ -4,6 +4,7 @@ local M = {}
 local config = {
   kickass_path = "/home/phonon/Development/lang/C64-KickAssembler/KickAss.jar",
   x64_path = "x64", 
+  kickass_man = false,
   keys = {
     assemble = "<leader>ka",
     run = "<leader>kr",
@@ -17,18 +18,76 @@ local config = {
   }
 }
 
+-- function M.setup(opts)
+--   opts = opts or {}
+--   config.kickass_path = opts.kickass_path or config.kickass_path
+--   config.x64_path = opts.x64_path or config.x64_path
+--   if opts.keys then
+--     config.keys = vim.tbl_extend("force", config.keys, opts.keys)
+--   end
+-- end
+--
+-- function M.get_config()
+--   return config
+-- end
+
 function M.setup(opts)
   opts = opts or {}
+
+  -- Konfiguration übernehmen
   config.kickass_path = opts.kickass_path or config.kickass_path
   config.x64_path = opts.x64_path or config.x64_path
+  config.kickass_man = opts.kickass_man or config.kickass_man
+
   if opts.keys then
     config.keys = vim.tbl_extend("force", config.keys, opts.keys)
   end
+
+  -- Nur wenn kickass_man explizit gesetzt ist, aktiv werden
+  if opts.kickass_man ~= nil then
+    local dst_dir = vim.fn.expand("~/.local/share/man/man99")
+    local already_installed = vim.fn.glob(dst_dir .. "/*.99") ~= ""
+
+    if opts.kickass_man == true and not already_installed then
+      M.install_manpages()
+    elseif opts.kickass_man == false and already_installed then
+      M.uninstall_manpages()
+    end
+  end
 end
 
-function M.get_config()
-  return config
+function M.install_manpages()
+  local plugin_path = vim.fn.stdpath("data") .. "/lazy/kicknvim"
+  local src_dir = plugin_path .. "/manpages/man99"
+  local dst_dir = vim.fn.expand("~/.local/share/man/man99")
+
+  vim.fn.mkdir(dst_dir, "p")
+
+  for _, file in ipairs(vim.fn.glob(src_dir .. "/*.99", false, true)) do
+    local dest_file = dst_dir .. "/" .. vim.fn.fnamemodify(file, ":t")
+    vim.fn.writefile(vim.fn.readfile(file), dest_file)
+  end
+
+  vim.fn.system({ "mandb", vim.fn.expand("~/.local/share/man") })
+  vim.notify("KickNvim manpages installed", vim.log.levels.INFO)
 end
+
+function M.uninstall_manpages()
+  local dst_dir = vim.fn.expand("~/.local/share/man/man99")
+  local files = vim.fn.glob(dst_dir .. "/*.99", false, true)
+
+  for _, file in ipairs(files) do
+    vim.fn.delete(file)
+  end
+
+  if vim.fn.empty(vim.fn.glob(dst_dir .. "/*")) == 1 then
+    vim.fn.delete(dst_dir, "d")
+  end
+
+  vim.fn.system({ "mandb", vim.fn.expand("~/.local/share/man") })
+  vim.notify("KickNvim manpages removed", vim.log.levels.INFO)
+end
+
 
 -- ======================== HELPER FUNCTIONS =============================
 

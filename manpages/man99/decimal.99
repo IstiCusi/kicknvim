@@ -1,0 +1,73 @@
+.TH DECIMAL 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+decimal \- Decimal Mode Flag (D flag)
+
+.SH DESCRIPTION
+The Decimal Mode Flag (D flag) in the 6502 processor determines whether arithmetic operations are performed in binary or Binary-Coded Decimal (BCD) mode. When the D flag is set, the processor performs arithmetic operations using BCD, which is useful for applications requiring precise decimal calculations, such as financial computations.
+
+.SH SETTING AND CLEARING THE D FLAG
+.TP
+.B SED
+Set Decimal Mode: Sets the D flag to enable BCD arithmetic.
+.TP
+.B CLD
+Clear Decimal Mode: Clears the D flag to return to binary arithmetic.
+
+.SH EFFECT ON INSTRUCTIONS
+The D flag affects the following instructions:
+.TP
+.B ADC
+Add with Carry: Performs BCD addition when D flag is set.
+.TP
+.B SBC
+Subtract with Borrow: Performs BCD subtraction when D flag is set.
+
+Other instructions are unaffected by the state of the D flag.
+
+.SH BEHAVIOR IN DECIMAL MODE
+In BCD mode, each byte is treated as two decimal digits:
+- The lower 4 bits represent the units digit (0–9).
+- The upper 4 bits represent the tens digit (0–9).
+
+For example, the byte 0x45 represents the decimal number 45.
+
+When performing ADC or SBC in decimal mode, the processor adjusts the result to ensure each digit is a valid decimal digit (0–9). This adjustment may affect the Carry flag.
+
+.SH INTERRUPT BEHAVIOR
+On the original NMOS 6502:
+- The D flag is not automatically cleared on interrupt or reset.
+- Interrupt Service Routines (ISRs) should explicitly clear the D flag using CLD to prevent unintended BCD operations.
+
+On the CMOS 65C02 and later:
+- The D flag is automatically cleared on interrupt and reset, reducing the need for explicit CLD in ISRs.
+
+.SH FLAGS AFFECTED
+In decimal mode, the behavior of certain flags may differ:
+- The Carry (C) flag is set if the result exceeds 99 (BCD).
+- The Zero (Z) and Negative (N) flags may not reflect the correct status after BCD operations on the NMOS 6502.
+
+.SH EXAMPLES
+.TP
+.B Perform BCD addition
+.nf
+    SED          ; Set Decimal Mode
+    CLC          ; Clear Carry
+    LDA #$45     ; Load 45 into accumulator
+    ADC #$27     ; Add 27 (BCD)
+    CLD          ; Clear Decimal Mode
+.fi
+
+After execution, the accumulator contains 0x72 (decimal 72), and the Carry flag is set if there was a carry out of the most significant digit.
+
+.SH NOTES
+- BCD mode is primarily used for applications requiring precise decimal arithmetic.
+- The D flag should be managed carefully to avoid unintended behavior, especially on the NMOS 6502.
+- Some systems, like the Commodore 64, automatically clear the D flag on startup.
+
+.SH SEE ALSO
+sed(99), cld(99), adc(99), sbc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

@@ -1,0 +1,40 @@
+
+.TH STX 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+stx \- Store X Register into Memory
+
+.SH SYNOPSIS
+.B stx
+.I operand
+
+.SH DESCRIPTION
+STX (Store X Register) writes the contents of the X index register to memory. The X register remains unchanged.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode        Opcode  Bytes  Cycles
+Zero Page              $86     2      3
+Zero Page,Y            $96     2      4
+Absolute               $8E     3      4
+.TE
+
+.SH FLAGS AFFECTED
+None.
+
+.SH EXAMPLES
+.nf
+    LDX #$AB
+    STX $10         ; Stores X ($AB) in memory at $0010
+.fi
+
+.SH NOTES
+- Commonly used for storing index offsets or counters.
+- Does not alter any processor flags.
+
+.SH SEE ALSO
+ldx(99), sta(99), sty(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss

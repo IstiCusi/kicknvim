@@ -1,0 +1,60 @@
+.TH SRE 99 "June 2025" "MOS 6502 Undocumented Opcode" "Kick'N'Vim Manual"
+
+.SH NAME
+sre \- Shift Right then Exclusive OR (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B sre
+.I addr
+
+.SH DESCRIPTION
+SRE (Shift Right then EOR) is an undocumented instruction on the MOS 6502 that first performs a logical shift right on the specified memory location and then executes an Exclusive OR (EOR) between the accumulator and the shifted value.
+
+This two-instruction sequence is combined into one opcode, making it useful for compact bit-processing routines.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode         Opcode   Bytes  Cycles
+Absolute                $4F      3      6
+Absolute,X              $5F      3      7
+Absolute,Y              $5B      3      7
+Zero Page               $47      2      5
+Zero Page,X             $57      2      6
+(Indirect,X)            $43      2      8
+(Indirect),Y            $53      2      8
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B C  
+Set to the value shifted out by the LSR step.
+.TP
+.B N  
+Reflects the sign bit (bit 7) of the final accumulator value.
+.TP
+.B Z  
+Set if the resulting accumulator value is zero.
+.TP
+.B V  
+Not affected by this instruction.
+
+.SH EXAMPLES
+.nf
+    LDA #$FF
+    STA $10        ; store 0xFF in memory
+    SRE $10        ; performs LSR $10 then A = A EOR M
+    ; M = 0x7F, A = 0x80
+.fi
+
+.SH NOTES
+- SRE merges `LSR` and `EOR` in a single opcode for compact code.
+- As with all undocumented opcodes, it's unsupported on many 6502 variants and should be used with care.
+- Behaves reliably on NMOS 6502 but not guaranteed on CMOS variants like the 65C02.
+
+.SH SEE ALSO
+lsr(99), eor(99), slo(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

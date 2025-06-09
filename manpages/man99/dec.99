@@ -1,0 +1,64 @@
+.TH DEC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+dec \- Decrement Memory
+
+.SH SYNOPSIS
+.B dec
+\fIaddress\fR
+
+.SH DESCRIPTION
+DEC (Decrement Memory) is an instruction of the MOS 6502 processor that subtracts one from the value stored at a specified memory location. The result wraps around if it underflows:
+- If the value is 0x00, decrementing wraps it to 0xFF.
+- For signed values, decrementing 0x80 (-128) wraps to 0x7F (+127).
+
+This instruction is useful for implementing countdown loops or adjusting memory-stored counters.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Zero Page	$C6	2	5
+Zero Page,X	$D6	2	6
+Absolute	$CE	3	6
+Absolute,X	$DE	3	7
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Decrement a memory location
+.nf
+    LDA $10      ; Load value from address $10
+    DEC $10      ; Decrement value at address $10
+    BEQ zero     ; Branch if result is zero
+
+zero:
+    ; Handle zero case
+.fi
+
+.TP
+.B Decrement with indexing
+.nf
+    LDX #$05
+    DEC $20,X    ; Decrement value at address $20 + X
+.fi
+
+.SH NOTES
+- DEC does not affect the Carry (C) or Overflow (V) flags.
+- It operates directly on memory; to decrement a register, use DEX or DEY.
+- For indirect addressing modes, consider using the undocumented DCP instruction, which combines DEC and CMP operations.
+
+.SH SEE ALSO
+dex(99), dey(99), dcp(99), inc(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

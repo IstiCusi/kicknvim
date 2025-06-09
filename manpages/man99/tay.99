@@ -1,0 +1,46 @@
+
+.TH TAY 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+tay \- Transfer Accumulator to Y Register
+
+.SH SYNOPSIS
+.B tay
+
+.SH DESCRIPTION
+TAY (Transfer Accumulator to Y) copies the value of the A register into the Y index register. It updates the Zero and Negative flags based on the transferred value.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode  Opcode  Bytes  Cycles
+Implied          $A8     1      2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B Z  
+Set if Y = 0.
+.TP
+.B N  
+Set if bit 7 of Y is set (negative in two's complement).
+
+.SH EXAMPLE
+.nf
+    LDA #$05
+    TAY          ; Y = $05, Z=0, N=0
+
+    LDA #$00
+    TAY          ; Y = $00, Z=1, N=0
+.fi
+
+.SH NOTES
+- Frequently used to prepare Y as a pointer or loop index based on A.
+- Does not modify the accumulator.
+- Flags reflect the value loaded into Y.
+
+.SH SEE ALSO
+tax(99), tay(99), lda(99), ldy(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss

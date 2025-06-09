@@ -1,0 +1,52 @@
+.TH BPL 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bpl \- Branch if Plus (Negative flag clear)
+
+.SH SYNOPSIS
+.B bpl
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BPL (Branch if Plus) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the negative flag (N) is clear (i.e., equals zero).
+
+This instruction is typically used after operations that affect the negative flag, such as arithmetic or logical instructions, allowing conditional control flow based on the sign of the result.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BPL.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$10	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BPL only checks the negative flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    LDA #$01     ; Load 1 into accumulator (N flag clear)
+    BPL positive ; Branch if negative flag is clear
+
+    ; code for negative result continues here
+
+positive:
+    ; code for positive result
+.fi
+
+.SH NOTES
+- BPL is commonly used after arithmetic or logical operations to branch based on the sign of the result.
+- If the branch crosses a page boundary, the CPU requires one extra cycle.
+- The target must be within -128 to +127 bytes of the instruction following BPL.
+
+.SH SEE ALSO
+bmi(99), beq(99), bne(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

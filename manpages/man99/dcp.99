@@ -1,0 +1,63 @@
+.TH DCP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+dcp \- Decrement Memory and Compare with Accumulator (Undocumented Opcode)
+
+.SH SYNOPSIS
+.B dcp
+\fIaddress\fR
+
+.SH DESCRIPTION
+DCP is an undocumented instruction of the MOS 6502 processor that combines the functionality of DEC (Decrement Memory) and CMP (Compare Accumulator with Memory) into a single operation. It decrements the value at the specified memory location by one and then compares the result with the accumulator, affecting the processor status flags accordingly.
+
+This instruction is particularly useful for implementing certain operations more efficiently, such as decrementing a 16-bit pointer or performing combined decrement and compare operations in fewer cycles.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Indexed Indirect (Indirect,X)	$C3	2	8
+Zero Page	$C7	2	5
+Zero Page,X	$D7	2	6
+Absolute	$CF	3	6
+Absolute,X	$DF	3	7
+Absolute,Y	$DB	3	7
+Indirect Indexed (Indirect),Y	$D3	2	8
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result of the comparison has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result of the comparison is zero (i.e., accumulator equals memory value after decrement).
+.TP
+.B C
+Set if the accumulator is greater than or equal to the memory value after decrement; cleared if less.
+
+.SH EXAMPLES
+.TP
+.B Decrementing a 16-bit pointer
+.nf
+    LDA #$FF
+    DCP pointer       ; Decrease low byte and compare with A
+    BNE skip
+    DEC pointer+1     ; Decrease high byte if low byte underflowed
+skip:
+    ; Continue execution
+.fi
+
+This approach uses fewer cycles and bytes compared to separate DEC and CMP instructions.
+
+.SH NOTES
+- DCP is an undocumented opcode and may not be supported on all 6502 variants.
+- Its behavior is consistent across many NMOS 6502 processors but is not guaranteed on CMOS versions like the 65C02.
+- Use with caution, as relying on undocumented instructions can affect portability and compatibility.
+
+.SH SEE ALSO
+dec(99), cmp(99), isc(99), slo(99), rla(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

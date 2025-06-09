@@ -1,0 +1,75 @@
+.TH PLP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+plp \- Pull Processor Status from Stack
+
+.SH SYNOPSIS
+.B plp
+
+.SH DESCRIPTION
+PLP (Pull Processor Status) is an instruction of the MOS 6502 processor that retrieves a byte from the stack and loads it into the processor status register (P). This operation restores the state of the processor flags that were previously saved using the PHP (Push Processor Status) instruction.
+
+Upon execution, PLP performs the following steps:
+1. Increments the stack pointer by one.
+2. Loads the byte at the new stack location into the processor status register.
+
+This operation affects all the processor flags based on the retrieved value.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$28	1	4
+.TE
+
+.SH FLAGS AFFECTED
+All processor flags are affected:
+.TS
+l l.
+Flag	Effect
+N (Negative)	Set or cleared based on bit 7 of the pulled value
+V (Overflow)	Set or cleared based on bit 6
+B (Break)	Set or cleared based on bit 4
+D (Decimal Mode)	Set or cleared based on bit 3
+I (Interrupt Disable)	Set or cleared based on bit 2
+Z (Zero)	Set or cleared based on bit 1
+C (Carry)	Set or cleared based on bit 0
+.TE
+
+Note: Bit 5 is unused but is typically set to 1 when pushed onto the stack by PHP and restored by PLP.
+
+.SH EXAMPLES
+.TP
+.B Save and restore processor status around a subroutine
+.nf
+    PHP          ; Save processor status
+    JSR subroutine
+    PLP          ; Restore processor status
+    ; Continue execution
+
+subroutine:
+    ; Perform operations that may alter flags
+    RTS
+.fi
+
+.TP
+.B Preserve processor status during interrupt
+.nf
+interrupt_handler:
+    PHP          ; Save processor status
+    ; Handle interrupt
+    PLP          ; Restore processor status
+    RTI          ; Return from interrupt
+.fi
+
+.SH NOTES
+- The stack resides in page $01 (addresses $0100–$01FF). Ensure that there is sufficient stack space to avoid overwriting important data.
+- PLP is commonly used in conjunction with PHP to preserve the processor status across subroutines or interrupts.
+- The instruction affects all processor flags based on the value pulled from the stack.
+
+.SH SEE ALSO
+php(99), pha(99), pla(99), tsx(99), txs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

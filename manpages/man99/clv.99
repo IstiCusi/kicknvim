@@ -1,0 +1,49 @@
+.TH CLV 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+clv \- Clear Overflow Flag
+
+.SH SYNOPSIS
+.B clv
+
+.SH DESCRIPTION
+CLV (Clear Overflow) is an instruction of the MOS 6502 processor that clears the overflow flag (V) in the processor status register. The overflow flag is set by arithmetic instructions such as ADC and SBC when a signed overflow occurs.
+
+Executing CLV resets this flag to 0, which is useful for clearing a previously set overflow condition and preparing the processor for new operations.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$B8	1	2
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B V
+Cleared to 0.
+
+.SH EXAMPLES
+.TP
+.B Clear the overflow flag before checking result
+.nf
+    CLV          ; Clear overflow flag
+    LDA #$40     ; Load 0x40 into accumulator
+    ADC #$40     ; Add 0x40 — may set overflow
+    BVC noOverflow ; Branch if no overflow occurred
+
+noOverflow:
+    ; continue normal execution
+.fi
+
+.SH NOTES
+- The overflow flag is used to detect signed overflow conditions.
+- There is no corresponding instruction to set the overflow flag (e.g., no `SEV`).
+- CLV does not affect any flags other than the overflow flag.
+
+.SH SEE ALSO
+adc(99), sbc(99), bit(99), bvc(99), bvs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

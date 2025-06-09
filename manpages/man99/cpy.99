@@ -1,0 +1,71 @@
+.TH CPY 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+cpy \- Compare Y Register with Memory
+
+.SH SYNOPSIS
+.B cpy
+\fIvalue\fR
+
+.SH DESCRIPTION
+CPY (Compare Y Register) compares the contents of the Y index register with a specified value or memory location. It performs a subtraction of the operand from the Y register without storing the result; only the processor status flags are affected.
+
+This instruction is useful for making decisions based on the comparison of the Y register with another value. After execution, the Zero (Z), Negative (N), and Carry (C) flags are set according to the result, allowing for conditional branching.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Immediate	$C0	2	2
+Zero Page	$C4	2	3
+Absolute	$CC	3	4
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result of the subtraction has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result of the subtraction is zero (i.e., Y register equals operand).
+.TP
+.B C
+Set if the Y register is greater than or equal to the operand; cleared if less.
+
+.SH EXAMPLES
+.TP
+.B Compare Y register with immediate value
+.nf
+    LDY #$10     ; Load 0x10 into Y register
+    CPY #$10     ; Compare Y register with 0x10
+    BEQ equal    ; Branch if equal
+
+equal:
+    ; Code for equal case
+.fi
+
+.TP
+.B Compare Y register with memory value
+.nf
+    LDY #$20     ; Load 0x20 into Y register
+    CPY $00FF    ; Compare Y register with value at memory address $00FF
+    BCC less     ; Branch if Y register is less than memory value
+
+less:
+    ; Code for less-than case
+.fi
+
+.SH NOTES
+- CPY is functionally similar to performing a subtraction (Y - M) without storing the result.
+- The instruction affects the processor status flags, which can be used with conditional branch instructions like BEQ, BNE, BCC, and BCS to control program flow.
+- When comparing unsigned values:
+  - If Y >= M, the Carry flag is set.
+  - If Y < M, the Carry flag is cleared.
+- For signed comparisons, additional logic is required as the CPY instruction does not account for signed overflow.
+
+.SH SEE ALSO
+cmp(99), cpx(99), beq(99), bne(99), bcc(99), bcs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

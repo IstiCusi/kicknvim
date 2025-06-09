@@ -1,0 +1,64 @@
+.TH INC 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+inc \- Increment Memory
+
+.SH SYNOPSIS
+.B inc
+\fIaddress\fR
+
+.SH DESCRIPTION
+INC (Increment Memory) is an instruction of the MOS 6502 processor that adds one to the value stored at a specified memory location. The result wraps around if it overflows:
+- If the value is 0xFF, incrementing wraps it to 0x00.
+- For signed values, incrementing 0x7F (+127) wraps to 0x80 (-128).
+
+This instruction is useful for implementing counters, loops, or adjusting memory-stored values.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Zero Page	$E6	2	5
+Zero Page,X	$F6	2	6
+Absolute	$EE	3	6
+Absolute,X	$FE	3	7
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if the result has bit 7 set (i.e., result is negative).
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Increment a memory location
+.nf
+    LDA $10      ; Load value from address $10
+    INC $10      ; Increment value at address $10
+    BEQ zero     ; Branch if result is zero
+
+zero:
+    ; Handle zero case
+.fi
+
+.TP
+.B Increment with indexing
+.nf
+    LDX #$05
+    INC $20,X    ; Increment value at address $20 + X
+.fi
+
+.SH NOTES
+- INC does not affect the Carry (C) or Overflow (V) flags.
+- It operates directly on memory; to increment a register, use INX or INY.
+- For indirect addressing modes, consider using the undocumented ISB instruction, which combines INC and SBC operations.
+
+.SH SEE ALSO
+inx(99), iny(99), isb(99), dec(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

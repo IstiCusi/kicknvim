@@ -1,0 +1,70 @@
+.TH JSR 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+jsr \- Jump to Subroutine
+
+.SH SYNOPSIS
+.B jsr
+\fIaddress\fR
+
+.SH DESCRIPTION
+JSR (Jump to Subroutine) is an instruction of the MOS 6502 processor that facilitates subroutine calls. It pushes the address of the instruction following the JSR onto the stack and then sets the program counter to the specified address, effectively transferring control to the subroutine.
+
+This mechanism allows for structured programming by enabling code reuse and modular design.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Absolute	$20	3	6
+.TE
+
+.SH STACK BEHAVIOR
+When executing JSR, the processor performs the following steps:
+1. Decrements the stack pointer by one and stores the high byte of the return address (address of the next instruction minus one) at the new stack location.
+2. Decrements the stack pointer by one and stores the low byte of the return address at the new stack location.
+3. Sets the program counter to the target address specified by the operand.
+
+This ensures that the RTS (Return from Subroutine) instruction can later retrieve the correct return address from the stack.
+
+.SH FLAGS AFFECTED
+None. The JSR instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Basic subroutine call
+.nf
+    JSR subroutine
+    ; Execution continues here after RTS
+
+subroutine:
+    ; Subroutine code
+    RTS
+.fi
+
+.TP
+.B Nested subroutine calls
+.nf
+    JSR first_subroutine
+    ; Execution continues here after both subroutines
+
+first_subroutine:
+    JSR second_subroutine
+    RTS
+
+second_subroutine:
+    ; Subroutine code
+    RTS
+.fi
+
+.SH NOTES
+- The return address pushed onto the stack is the address of the last byte of the JSR instruction, not the address of the following instruction. This is because the program counter is incremented after the address is pushed onto the stack.
+- The stack resides in page $01 (addresses $0100–$01FF). Ensure that there is sufficient stack space to avoid overwriting important data.
+- JSR only supports absolute addressing mode; it cannot be used with indirect or relative addressing modes.
+
+.SH SEE ALSO
+rts(99), jmp(99), brk(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

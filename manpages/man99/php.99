@@ -1,0 +1,80 @@
+.TH PHP 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+php \- Push Processor Status onto Stack
+
+.SH SYNOPSIS
+.B php
+
+.SH DESCRIPTION
+PHP (Push Processor Status) is an instruction of the MOS 6502 processor that pushes a copy of the processor status register (P) onto the stack. This is useful for preserving the current state of the processor flags before performing operations that may alter them.
+
+The processor status register contains the following flags:
+
+.TS
+l l.
+Bit	Flag
+7	Negative (N)
+6	Overflow (V)
+5	Unused (Always set to 1)
+4	Break (B)
+3	Decimal Mode (D)
+2	Interrupt Disable (I)
+1	Zero (Z)
+0	Carry (C)
+.TE
+
+When PHP is executed, the contents of the processor status register are pushed onto the stack with the Break flag (bit 4) and the unused bit (bit 5) set to 1. This behavior ensures consistency with the status pushed during a BRK instruction.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Implied	$08	1	3
+.TE
+
+.SH STACK BEHAVIOR
+When executing PHP, the processor performs the following steps:
+1. Decrements the stack pointer by one.
+2. Stores the processor status register at the new stack location.
+
+This allows the status to be retrieved later using the PLP (Pull Processor Status) instruction.
+
+.SH FLAGS AFFECTED
+None. The PHP instruction does not modify any processor flags.
+
+.SH EXAMPLES
+.TP
+.B Save and restore processor status around a subroutine
+.nf
+    PHP          ; Save processor status
+    JSR subroutine
+    PLP          ; Restore processor status
+    ; Continue execution
+
+subroutine:
+    ; Perform operations that may alter flags
+    RTS
+.fi
+
+.TP
+.B Preserve processor status during interrupt
+.nf
+interrupt_handler:
+    PHP          ; Save processor status
+    ; Handle interrupt
+    PLP          ; Restore processor status
+    RTI          ; Return from interrupt
+.fi
+
+.SH NOTES
+- The stack resides in page $01 (addresses $0100–$01FF). Ensure that there is sufficient stack space to avoid overwriting important data.
+- PHP is commonly used in conjunction with PLP to preserve the processor status across subroutines or interrupts.
+- The Break flag (bit 4) is set when the status is pushed onto the stack, even if it was clear in the processor status register. This behavior is consistent with the BRK instruction.
+
+.SH SEE ALSO
+plp(99), pha(99), pla(99), tsx(99), txs(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

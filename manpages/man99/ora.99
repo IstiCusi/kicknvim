@@ -1,0 +1,59 @@
+.TH ORA 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+ora \- Logical Inclusive OR with Accumulator
+
+.SH SYNOPSIS
+.B ora
+\fIvalue\fR
+
+.SH DESCRIPTION
+ORA (Logical Inclusive OR) performs a bitwise OR operation between the accumulator and a value from memory, storing the result back in the accumulator. This operation is useful for setting specific bits in the accumulator without altering the others.
+
+.SH OPCODES
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Immediate	$09	2	2
+Zero Page	$05	2	3
+Zero Page,X	$15	2	4
+Absolute	$0D	3	4
+Absolute,X	$1D	3	4 (+1 if page crossed)
+Absolute,Y	$19	3	4 (+1 if page crossed)
+(Indirect,X)	$01	2	6
+(Indirect),Y	$11	2	5 (+1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+.B N
+Set if bit 7 of the result is set; cleared otherwise.
+.TP
+.B Z
+Set if the result is zero; cleared otherwise.
+
+.SH EXAMPLES
+.TP
+.B Set bit 3 of the accumulator
+.nf
+    LDA #$08     ; Load 00001000 into accumulator
+    ORA #$04     ; OR with 00000100, result is 00001100
+.fi
+
+.TP
+.B Combine accumulator with memory value
+.nf
+    ORA $10      ; OR accumulator with value at address $10
+.fi
+
+.SH NOTES
+- ORA is commonly used to set specific bits in the accumulator.
+- The choice of addressing mode affects the instruction's length and execution time.
+- Indexed and indirect addressing modes are useful for accessing arrays and data structures.
+
+.SH SEE ALSO
+and(99), eor(99), lda(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

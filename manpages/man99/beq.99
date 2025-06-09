@@ -1,0 +1,52 @@
+.TH BEQ 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+beq \- Branch if Equal (Zero flag set)
+
+.SH SYNOPSIS
+.B beq
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BEQ (Branch if Equal) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the zero flag (Z) is set (i.e., equals one).
+
+This instruction is typically used after operations that affect the zero flag, such as CMP, CPX, CPY, or arithmetic instructions, allowing conditional control flow based on equality comparisons.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BEQ.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$F0	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BEQ only checks the zero flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    LDA #$00     ; load zero into accumulator
+    BEQ zeroFlag ; branch if zero flag is set (A == 0)
+
+    ; code for A != 0 continues here
+
+zeroFlag:
+    ; code for A == 0
+.fi
+
+.SH NOTES
+- BEQ is commonly used after CMP, CPX, or CPY for equality comparisons.
+- If the branch crosses a page boundary, the CPU requires one extra cycle.
+- The target must be within -128 to +127 bytes of the instruction following BEQ.
+
+.SH SEE ALSO
+bne(99), bcc(99), bcs(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+

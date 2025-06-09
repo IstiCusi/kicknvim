@@ -1,0 +1,52 @@
+.TH BCS 99 "June 2025" "MOS 6502 Instruction Set" "Kick'N'Vim Manual"
+
+.SH NAME
+bcs \- Branch if Carry Set
+
+.SH SYNOPSIS
+.B bcs
+\fIrelative-address\fR
+
+.SH DESCRIPTION
+BCS (Branch if Carry Set) is a conditional branch instruction of the MOS 6502 processor. It causes the program counter (PC) to jump to a new location if the carry flag (C) is set (i.e., equals one).
+
+This instruction is typically used after operations that affect the carry flag, such as ADC or CMP, allowing conditional control flow based on unsigned comparisons.
+
+The branch offset is an 8-bit signed value ranging from -128 to +127 bytes, relative to the address of the instruction following BCS.
+
+.SH OPCODE
+.TS
+l l l l.
+Addressing Mode	Opcode	Bytes	Cycles
+Relative	$B0	2	2 (+1 if branch taken, +1 if page crossed)
+.TE
+
+.SH FLAGS AFFECTED
+.TP
+None.
+BCS only checks the carry flag but does not modify any processor status flags.
+
+.SH EXAMPLES
+.TP
+.B Conditional branch
+.nf
+    CMP #$10     ; compare accumulator with 0x10
+    BCS greater  ; branch if carry is set (A >= $10)
+
+    ; code for A < $10 continues here
+
+greater:
+    ; code for A >= $10
+.fi
+
+.SH NOTES
+- BCS is commonly used after CMP, CPX, or CPY for unsigned comparisons.
+- If the branch crosses a page boundary, the CPU requires one extra cycle.
+- The target must be within -128 to +127 bytes of the instruction following BCS.
+
+.SH SEE ALSO
+bcc(99), beq(99), bmi(99), cmp(99)
+
+.SH AUTHOR
+Adapted for manpage usage by Stephan P. A. Strauss
+
