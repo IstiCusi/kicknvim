@@ -31,6 +31,7 @@ local config = {
 --   return config
 -- end
 
+
 function M.setup(opts)
   opts = opts or {}
 
@@ -43,7 +44,7 @@ function M.setup(opts)
     config.keys = vim.tbl_extend("force", config.keys, opts.keys)
   end
 
-  -- Nur wenn kickass_man explizit gesetzt ist, aktiv werden
+  -- Optional: manpages installieren/deinstallieren
   if opts.kickass_man ~= nil then
     local dst_dir = vim.fn.expand("~/.local/share/man/man99")
     local already_installed = vim.fn.glob(dst_dir .. "/*.99") ~= ""
@@ -54,7 +55,22 @@ function M.setup(opts)
       M.uninstall_manpages()
     end
   end
+
+  -- Autocommand nur hier, weil config jetzt vollständig ist
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "kickass",
+    callback = function(args)
+      local keys = config.keys
+      vim.keymap.set("n", keys.assemble, M.assemble_current_file, { buffer = args.buf, desc = "Assemble with KickAss" })
+      vim.keymap.set("n", keys.run, M.run_prg, { buffer = args.buf, desc = "Run PRG with VICE" })
+      if keys.libinstall then
+        vim.keymap.set("n", keys.libinstall, M.install_or_update_libs, { buffer = args.buf, desc = "Install/Update KickAsm libraries" })
+      end
+    end,
+  })
 end
+
+
 
 function M.install_manpages()
   local plugin_path = vim.fn.stdpath("data") .. "/lazy/kicknvim"
