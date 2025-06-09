@@ -65,9 +65,15 @@ You can redefine keybindings, use your own emulator, or point to another version
 
 ## 🚀 Usage
 
-1. Open your `.asm` file. Make sure it triggers the filetype `kickass`.
+1. Open your `_k.asm` file. Make sure it triggers the filetype `kickass`.
 2. Press `<leader>ka` to assemble it using KickAssembler.
 3. Press `<leader>kr` to run the output `.prg` in VICE (x64).
+4. Press (typically) `K` to show the man page for the instruction below the cursor.
+
+
+<p align="center">
+  <img src="media/example.png" alt="Kick'N'Vim Example" width="800"/>
+</p>
 
 ---
 
