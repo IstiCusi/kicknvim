@@ -17,6 +17,7 @@
 * 🎨 Syntax highlighting for `_k.asm` files or by using `:set filetype=kickass`
 * 🧠 Buffer-local keymaps for assembling and running code
 * 🏃 Integration with [VICE](https://vice-emu.sourceforge.io/) to launch compiled `.prg` files
+* 🚀 Complete 6502 assembler man pages included
 * 🔧 Fully configurable with sane defaults
 * 💥 Commands:
 
@@ -34,6 +35,7 @@
   config = function()
     require("kicknvim").setup({
       kickass_path = "/home/phonon/opt/kickassembler/KickAss.jar", -- or "kickass" if using a wrapper
+      kickman_man = false,
       x64_path = "/usr/bin/x64", -- path to your VICE binary
       keys = {
         assemble = "<leader>ka",
@@ -55,6 +57,7 @@ The plugin will only activate for buffers with `filetype=kickass`.
 | `kickass_path` | Path to `KickAss.jar` or a wrapper script    | `"kickass"`                |
 | `x64_path`     | Path to your VICE emulator binary (x64)      | `"x64"`                    |
 | `keys`         | Table with `assemble` and `run` key mappings | `<leader>ka`, `<leader>kr` |
+| `kickass_man`  | Installation or Deinstallation of man pages  | `false`                    |
 
 You can redefine keybindings, use your own emulator, or point to another version of KickAssembler if needed.
 
