@@ -1,5 +1,7 @@
 #!/bin/sh
 
+: "${HOME:?ERROR: \$HOME is not set}"
+
 DEST="$HOME/.local/share/man/man99"
 
 mkdir -p "$DEST"
